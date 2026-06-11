@@ -33,10 +33,13 @@ function AuthModalContent({ onClose }: { onClose: () => void }) {
     try {
       if (tab === "login") {
         await login({ email, password });
+        onClose();
       } else {
         await register({ name, email, password });
+        // No auto-login: cambiar a iniciar sesión
+        setTab("login");
+        setPassword("");
       }
-      onClose();
     } catch {
       // error ya está en el store vía useAuth
     }

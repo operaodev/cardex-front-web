@@ -4,6 +4,8 @@ import type {
   MarketAnalysis,
   OffersPage,
   OffersInput,
+  ProductResumePage,
+  FilterInput,
 } from "@/types/marketplace";
 
 const MARKETPLACE_KEY = "marketplace" as const;
@@ -44,6 +46,25 @@ export function useOffers(input: OffersInput | null) {
   return useQuery({
     queryKey: [MARKETPLACE_KEY, input?.productId, "offers", input],
     queryFn: () => fetchOffers(input!),
+    enabled: input != null,
+    retry: false,
+  });
+}
+
+async function fetchMarketCards(
+  input: FilterInput,
+): Promise<ProductResumePage> {
+  const { data } = await apiClient.post<ProductResumePage>(
+    "/marketplace/cards",
+    input,
+  );
+  return data;
+}
+
+export function useMarketCards(input: FilterInput | null) {
+  return useQuery({
+    queryKey: [MARKETPLACE_KEY, "cards", input],
+    queryFn: () => fetchMarketCards(input!),
     enabled: input != null,
     retry: false,
   });

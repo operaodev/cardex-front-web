@@ -41,3 +41,32 @@ export interface OffersInput {
   page?: number;
   limit?: number;
 }
+
+export interface ProductResume {
+  id: number;
+  name: string;
+  code?: string;
+  set_name?: string;
+  rarity?: string;
+  rarity_code?: string;
+  image?: string;
+  global_stock: number;
+  average_price: number;
+}
+
+export interface ProductResumePage {
+  items: ProductResume[];
+  total: number;
+  page: number;
+  limit: number;
+  total_pages: number;
+}
+
+export interface FilterInput {
+  input: string;
+  tcgs?: string[];
+  langs?: string[];
+  page?: number;
+  limit?: number;
+  product_Type?: string;
+}

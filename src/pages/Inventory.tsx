@@ -11,7 +11,16 @@ export default function InventoryPage() {
   return (
     <main className="mx-auto w-10/12 py-10">
       <Header />
-
+      <Icon
+        onClick={() => setShowCreate(true)}
+        icon="game-icons:card-draw"
+        className="
+          fixed bottom-10 right-10
+          text-5xl font-bold text-gray-100 bg-gray-700
+          rounded-full p-3 shadow-lg shadow-gray-400
+          hover:bg-gray-600
+        "
+      />
       {isLoading && <SkeletonGrid />}
 
       {isError && (
@@ -36,17 +45,6 @@ export default function InventoryPage() {
               <StockRow key={stock.id} item={stock} />
             ))}
           </div>
-
-          <Icon
-            onClick={() => setShowCreate(true)}
-            icon="game-icons:card-draw"
-            className="
-              fixed bottom-10 right-10
-              text-5xl font-bold text-gray-100 bg-gray-700
-              rounded-full p-3 shadow-lg shadow-gray-400
-              hover:bg-gray-600
-            "
-          />
         </>
       )}
 

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { randomNames } from "@/hooks/useProduct";
 import { useSuggestions } from "@/hooks/useSuggestions";
@@ -28,6 +28,7 @@ const LANGUAGE_OPTIONS: { value: LangCode; label: string }[] = [
 ];
 
 export function Layout() {
+  const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
   const [selectedTcg, setSelectedTcg] = useState<TCG | undefined>(undefined);
   const [selectedLang, setSelectedLang] = useState<LangCode | undefined>(
@@ -46,7 +47,10 @@ export function Layout() {
     lang: selectedLang,
   };
 
-  const { data: suggestions, isFetching } = useSuggestions(query, !isAuthenticated);
+  const { data: suggestions, isFetching } = useSuggestions(
+    query,
+    !isAuthenticated,
+  );
 
   // Close dropdown on outside click (ignores clicks on selects or search area)
   useEffect(() => {
@@ -97,11 +101,21 @@ export function Layout() {
           />
 
           {/* Search bar — rounded-full glass style */}
-          <NavSearch
-            value={searchInput}
-            onChange={(v) => setSearchInput(v)}
-            setShowSuggestions={(show) => setShowSuggestions(show)}
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchInput.trim()) {
+                navigate(`/?input=${encodeURIComponent(searchInput.trim())}`);
+                setShowSuggestions(false);
+              }
+            }}
+          >
+            <NavSearch
+              value={searchInput}
+              onChange={(v) => setSearchInput(v)}
+              setShowSuggestions={(show) => setShowSuggestions(show)}
+            />
+          </form>
 
           {/* Suggestions dropdown */}
           {shouldShow && (
